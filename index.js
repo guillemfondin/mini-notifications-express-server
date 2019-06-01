@@ -11,24 +11,23 @@ expressServer.listen(process.env.PORT || 3000, () => {
   expressServer.get("/", function(req, res) {
     const token = req.query.token;
     if (!Expo.isExpoPushToken(token)) {
-      console.log("Token invalide");
       res.send({err: "Token invalide"})
     } else {
       let messages = [
         {
           to: token,
           sound: "default",
-          body: "Notifications test",
+          body: "La météo du jour !",
           data: {
-            test: "toto"
+            city: "Palaiseau"
           }
         }
-      ]
+      ];
 
       expo.sendPushNotificationsAsync(messages).then(ticket => {
-        res.send({ticket: ticket})
+        res.send({ticket: ticket});
+        console.log(ticket);
       }).catch(err => {
-        console.log("Erreur d'envoi")
         res.send({err: "Erreur d'envoi"})
       })
     }
